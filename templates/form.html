@@ -2,11 +2,102 @@
 <html>
 <head>
     <title>Medical Debt Inquiry Form</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #e6f2ff; /* Light blue background */
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center align items horizontally */
+    height: 100vh;
+}
+
+h2 {
+    color: #2e8b57; /* Sea green color for the heading */
+    margin: 20px 0; /* Maintain existing margin and add padding */
+    padding-top: 25px; /* Add top padding */
+}
+
+form {
+    background: #fff;
+    padding: 20px;
+    margin-top: 20px; /* Add some space above the form */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+/* Style inputs and textareas */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+input[type="number"],
+textarea {
+    width: calc(100% - 20px); /* Subtract padding from width */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 20px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+        #loadingMessage {
+            display: none; /* Hidden by default */
+            position: fixed; /* Positioned relative to the viewport */
+            top: 0; left: 0; right: 0; bottom: 0; /* Full viewport coverage */
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 9999; /* Sit on top of other elements */
+            display: flex; /* Use Flexbox for centering */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            text-align: center; /* Center text */
+        }
+        
+        .spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust height as needed */
+}
+
+.spinner {
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        </style>
+        
 </head>
 <body>
     <h2>Medical Debt Inquiry Form</h2>
 
-    <form action="/submit" method="post">
+    <form id="dataForm">
         <!-- Patient Identification -->
         <p>Full Name: <input type="text" name="patientfullName" placeholder="Full Name" value="John Doe"></p>
         <p>Date of Birth: <input type="date" name="patient_dob" value="1980-01-01"></p>
@@ -62,5 +153,34 @@
         <!-- Submit Button -->
         <p><input type="submit" value="Submit"></p>
     </form>
+    <div id="loadingMessage" style="display:none;">
+        <div class="spinner-container">
+            <div class="spinner"></div>
+        </div>
+        Loading, please wait...
+    </div>
+    <div id="responseContainer"></div>
+<script>
+document.getElementById('dataForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    
+    // Hide the form and show the loading message
+    document.getElementById('dataForm').style.display = 'none';
+    document.getElementById('loadingMessage').style.display = 'block';
+    
+    fetch('/submit', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('loadingMessage').style.display = 'none';
+        document.getElementById('responseContainer').innerHTML = data;
+        // Optionally, show the form again or leave it hidden
+        // document.getElementById('dataForm').style.display = 'block';
+    });
+});
+    </script>
 </body>
 </html>
