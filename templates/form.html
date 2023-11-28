@@ -2,8 +2,10 @@
 <html>
 <head>
     <title>Medical Debt Inquiry Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <style>
-        body {
+body {
     font-family: Arial, sans-serif;
     background-color: #e6f2ff; /* Light blue background */
     margin: 0;
@@ -11,26 +13,26 @@
     display: flex;
     flex-direction: column; /* Stack elements vertically */
     align-items: center; /* Center align items horizontally */
-    height: 100vh;
+    min-height: 100vh;
 }
 
 h2 {
     color: #2e8b57; /* Sea green color for the heading */
-    margin: 20px 0; /* Maintain existing margin and add padding */
-    padding-top: 25px; /* Add top padding */
+    margin: 1em 0;
+    padding-top: 1em; /* Add top padding */
+    font-size: 1.5em; /* Relative font size */
 }
 
 form {
     background: #fff;
-    padding: 20px;
-    margin-top: 20px; /* Add some space above the form */
+    padding: 1em;
+    margin-top: 1em; /* Add some space above the form */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 500px;
+    max-width: 500px; /* Maximum width with a sensible default */
 }
 
-/* Style inputs and textareas */
 input[type="text"],
 input[type="email"],
 input[type="tel"],
@@ -40,7 +42,7 @@ textarea {
     width: calc(100% - 20px); /* Subtract padding from width */
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
 }
@@ -60,23 +62,29 @@ input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-        #loadingMessage {
-            display: none; /* Hidden by default */
-            position: fixed; /* Positioned relative to the viewport */
-            top: 0; left: 0; right: 0; bottom: 0; /* Full viewport coverage */
-            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            z-index: 9999; /* Sit on top of other elements */
-            display: flex; /* Use Flexbox for centering */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            text-align: center; /* Center text */
-        }
-        
-        .spinner-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px; /* Adjust height as needed */
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    h2 {
+        font-size: 1.2em; /* Smaller font size for small screens */
+    }
+
+    form {
+        padding: 5%;
+        margin-top: 10px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="number"],
+    textarea {
+        padding: 8px; /* Slightly less padding on small screens */
+    }
+
+    input[type="submit"] {
+        padding: 12px 20px; /* Adjust button padding */
+    }
 }
 
 .spinner {
