@@ -8,52 +8,56 @@
 
     <form action="/submit" method="post">
         <!-- Patient Identification -->
-        <p>Full Name: <input type="text" name="fullName" placeholder="Full Name"></p>
-        <p>Date of Birth: <input type="date" name="dob"></p>
-        <p>Patient ID or Account Number: <input type="text" name="patientId" placeholder="Patient ID or Account Number"></p>
+        <p>Full Name: <input type="text" name="patientfullName" placeholder="Full Name" value="John Doe"></p>
+        <p>Date of Birth: <input type="date" name="patient_dob" value="1980-01-01"></p>
+        <p>Patient ID or Account Number: <input type="text" name="patientId" placeholder="Patient ID or Account Number" value="123456789"></p>
 
         <!-- Contact Information -->
-        <p>Current Address: <input type="text" name="address" placeholder="Current Address"></p>
-        <p>Contact Number: <input type="tel" name="contactNumber" placeholder="Contact Number"></p>
-        <p>Email Address: <input type="email" name="email" placeholder="Email Address"></p>
+
+        <p>Current Address: <input type="text" name="patient_address" placeholder="Current Address" value="123 Main St, Anytown, CA, USA, 90027"></p>
+        <p>Contact Number: <input type="tel" name="patient_contactNumber" placeholder="Contact Number" value="555-1234"></p>
+        <p>Email Address: <input type="email" name="patient_email" placeholder="Email Address" value="johndoe@example.com"></p>
 
         <!-- Debt Specifics -->
-        <p>Date of Service: <input type="date" name="serviceDate"></p>
-        <p>Total Debt Amount: <input type="number" name="debtAmount" placeholder="Total Debt Amount"></p>
-        <p>Do you have an itemized bill? <input type="checkbox" name="itemizedBill" value="yes"></p>
+        <p>Medical Provider Name: <input type="text" name="medical_provider_name" placeholder="Medical Provider Name" value="Dr. Spencer Kline"></p>
+        <p>Medical Provider Address: <input type="text" name="medical_provider_address" placeholder="Medical Provider Address" value="456 Downton St, Denver, CO, USA, 80027"></p>
+        <p>Date of Service: <input type="date" name="serviceDate" value="2023-01-01"></p>
+        <p>Total Debt Amount: <input type="number" name="debtAmount" placeholder="Total Debt Amount" value="5000"></p>
+        <p>Do you have an itemized bill? <input type="checkbox" name="itemizedBill" value="yes" checked></p>
+
 
         <!-- Insurance Information -->
         <p>Was it covered by insurance? <input type="radio" name="insuranceCoverage" value="yes"> Yes
-        <input type="radio" name="insuranceCoverage" value="no"> No</p>
-        <p>Insurance Provider: <input type="text" name="insuranceProvider" placeholder="Insurance Provider"></p>
-        <p>Reason for Insurance Denial: <input type="text" name="insuranceDenialReason" placeholder="Reason for Insurance Denial"></p>
+        <input type="radio" name="insuranceCoverage" value="no" checked> No</p>
+        <p>Insurance Provider: <input type="text" name="insuranceProvider" placeholder="Insurance Provider" value="No Insurance"></p>
+        <p>Reason for Insurance Denial: <input type="text" name="insuranceDenialReason" placeholder="Reason for Insurance Denial" value="No Insurance"></p>
 
-       <!-- Patient Perspective Questions -->
-       <p><textarea name="serviceDescription" rows="4" cols="50" placeholder="Please describe the medical services or items charged as you understand them."></textarea></p>
-       <p><textarea name="chargeComparison" rows="4" cols="50" placeholder="Do you have any information on how these charges compare to standard rates for similar services in our region?"></textarea></p>
-       <p><textarea name="durationAndStaff" rows="4" cols="50" placeholder="For services billed on a time basis, what information were you provided about how the time was calculated and which medical staff were involved?"></textarea></p>
+        <!-- Patient Perspective Questions -->
+        <p>Please describe the medical services or items charged as you understand them: <br/><textarea name="serviceDescription" rows="4" cols="50" placeholder="Please describe the medical services or items charged as you understand them.">General consultation and X-ray</textarea></p>
+        <p>Do you have any information on how these charges compare to standard rates for similar services in our region:<br/> <textarea name="chargeComparison" rows="4" cols="50" placeholder="Do you have any information on how these charges compare to standard rates for similar services in our region?">Rates seem higher than usual</textarea></p>
+        <p>For services billed on a time basis, what information were you provided about how the time was calculated and which medical staff were involved:<br/> <textarea name="durationAndStaff" rows="4" cols="50" placeholder="For services billed on a time basis, what information were you provided about how the time was calculated and which medical staff were involved?">Consultation lasted 30 minutes with Dr. Smith</textarea></p>
 
-       <!-- Patient Inquiry for Documentation and Justifications -->
-       <p><textarea name="costJustification" rows="4" cols="50" placeholder="Have you received any documentation justifying the costs associated with each service or procedure?"></textarea></p>
-       <p><textarea name="auditTrail" rows="4" cols="50" placeholder="Have you been provided with an audit trail or detailed billing progression for your case?"></textarea></p>
-       <p><textarea name="correctionPolicy" rows="4" cols="50" placeholder="Are you aware of the hospital’s policy on correcting or adjusting charges that are found to be erroneous or unjustified?"></textarea></p>
+        <!-- Patient Inquiry for Documentation and Justifications -->
+        <p>Have you received any documentation justifying the costs associated with each service or procedure?<br/> <textarea name="costJustification" rows="4" cols="50" placeholder="Have you received any documentation justifying the costs associated with each service or procedure?">No detailed justification provided</textarea></p>
+        <p>Have you been provided with an audit trail or detailed billing progression for your case?<br/><textarea name="auditTrail" rows="4" cols="50" placeholder="Have you been provided with an audit trail or detailed billing progression for your case?">No audit trail available</textarea></p>
+        <p>Are you aware of the hospital’s policy on correcting or adjusting charges that are found to be erroneous or unjustified <br/><textarea name="correctionPolicy" rows="4" cols="50" placeholder="Are you aware of the hospital’s policy on correcting or adjusting charges that are found to be erroneous or unjustified?">Not aware of any such policy</textarea></p>
 
         <!-- Financial Hardship -->
-        <p>Are you experiencing financial hardship? <input type="radio" name="financialHardship" value="yes"> Yes
+        <p>Are you experiencing financial hardship? <input type="radio" name="financialHardship" value="yes" checked> Yes
         <input type="radio" name="financialHardship" value="no"> No</p>
-        <p><textarea name="financialSituation" rows="4" cols="50" placeholder="Describe Your Financial Situation"></textarea></p>
+        <p><textarea name="financialSituation" rows="4" cols="50" placeholder="Describe Your Financial Situation">Currently unemployed, facing difficulty in meeting expenses</textarea></p>
 
         <!-- Request for Debt Relief -->
-        <p><textarea name="debtReliefReason" rows="4" cols="50" placeholder="Reason for Requesting Debt Write-off"></textarea></p>
-        <p>Can you afford a partial payment? <input type="radio" name="partialPayment" value="yes"> Yes
-        <input type="radio" name="partialPayment" value="no"> No</p>
-        <p><input type="number" name="affordableAmount" placeholder="Affordable Payment Amount"></p>
+        <p>Reason for Requesting Debt Write-off:<br/> <textarea name="debtReliefReason" rows="4" cols="50" placeholder="Reason for Requesting Debt Write-off">Unable to pay due to financial hardship</textarea></p>
+        <p>Can you afford a partial payment? <br/><input type="radio" name="partialPayment" value="yes"> Yes
+        <input type="radio" name="partialPayment" value="no" checked> No</p>
+        <p>Affordable Payment Amount <input type="number" name="affordableAmount" placeholder="Affordable Payment Amount" value="1000"></p>
 
         <!-- Patient's Remarks -->
-        <p><textarea name="additionalComments" rows="4" cols="50" placeholder="Any Other Information or Context"></textarea></p>
+        <p>Seeking assistance for bill reduction<br/><textarea name="additionalComments" rows="4" cols="50" placeholder="Any Other Information or Context">Seeking assistance for bill reduction</textarea></p>
 
         <!-- Consent and Confirmation -->
-        <p><input type="checkbox" name="consent" value="yes"> I consent to the information provided being used for reassessment of my medical debt.</p>
+        <p><input type="checkbox" name="consent" value="yes" checked> I consent to the information provided being used for reassessment of my medical debt.</p>
 
         <!-- Submit Button -->
         <p><input type="submit" value="Submit"></p>
