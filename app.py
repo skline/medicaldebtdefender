@@ -3,7 +3,6 @@ import yaml
 from openai import OpenAI
 from markupsafe import Markup
 client = OpenAI()
-
 app = Flask(__name__)
 
 @app.route('/')
