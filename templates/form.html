@@ -86,7 +86,12 @@ input[type="submit"]:hover {
         padding: 12px 20px; /* Adjust button padding */
     }
 }
-
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust height as needed */
+}
 .spinner {
     border: 5px solid #f3f3f3; /* Light grey */
     border-top: 5px solid #3498db; /* Blue */
@@ -99,8 +104,34 @@ input[type="submit"]:hover {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        </style>
+        .checkbox-label {
+            display: block;
+            margin: 10px 0;
+        }
         
+        .checkbox-label input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .checkbox-container {
+    position: relative; /* Establish a positioning context */
+    padding-left: 25px; /* Make space for the absolutely positioned checkbox */
+    margin: 10px 0; /* Add some vertical space between elements */
+}
+
+.checkbox-container input[type="checkbox"] {
+    position: absolute; /* Position the checkbox absolutely */
+    left: 0; /* Align it to the left */
+    top: 0; /* Align it to the top */
+    margin-right: 5px; /* Ensure some space on the right */
+}
+
+.checkbox-label {
+    display: block; /* Allows the label to take the full width */
+    /* If you need to align the text vertically with the checkbox, adjust the line-height */
+    line-height: 1.5; /* Adjust this value as needed */
+}
+        </style>
+
 </head>
 <body>
     <h2>Medical Debt Inquiry Form</h2>
@@ -114,7 +145,7 @@ input[type="submit"]:hover {
         <!-- Contact Information -->
 
         <p>Current Address: <input type="text" name="patient_address" placeholder="Current Address" value="123 Main St, Anytown, CA, USA, 90027"></p>
-        <p>Contact Number: <input type="tel" name="patient_contactNumber" placeholder="Contact Number" value="555-1234"></p>
+        <p>Contact Number: <input type="tel" name="patient_contactNumber" placeholder="Contact Number" value="303-555-1234"></p>
         <p>Email Address: <input type="email" name="patient_email" placeholder="Email Address" value="johndoe@example.com"></p>
 
         <!-- Debt Specifics -->
@@ -156,7 +187,12 @@ input[type="submit"]:hover {
         <p>Seeking assistance for bill reduction<br/><textarea name="additionalComments" rows="4" cols="50" placeholder="Any Other Information or Context">Seeking assistance for bill reduction</textarea></p>
 
         <!-- Consent and Confirmation -->
-        <p><input type="checkbox" name="consent" value="yes" checked> I consent to the information provided being used for reassessment of my medical debt.</p>
+        <p class="checkbox-container">
+            <input type="checkbox" id="consentCheckbox" name="consent" value="yes">
+            <label for="consentCheckbox" class="checkbox-label">
+                I consent to the information provided being used for reassessment of my medical debt.
+            </label>
+        </p>
 
         <!-- Submit Button -->
         <p><input type="submit" value="Submit"></p>
@@ -168,6 +204,26 @@ input[type="submit"]:hover {
         Loading, please wait...
     </div>
     <div id="responseContainer"></div>
+    <script>
+        window.onload = function() {
+            // Check if the 'clear_text' flag is true
+            var clearText = {{ clear_text|tojson }};
+            if (clearText) {
+                // Clear all input and textarea elements
+                var inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], textarea');
+                inputs.forEach(function(input) {
+                    input.value = '';
+                });
+        
+                // Uncheck all checkboxes and radio buttons
+                var checks = document.querySelectorAll('input[type="checkbox"], input[type="radio"]');
+                checks.forEach(function(check) {
+                    check.checked = false;
+                });
+            }
+        };
+        </script>
+        
 <script>
 document.getElementById('dataForm').addEventListener('submit', function(e) {
     e.preventDefault();

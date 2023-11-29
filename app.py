@@ -10,13 +10,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def form():
-    return render_template('form.html')
+    clear_text = 'clear' in request.args
+
+    return render_template('form.html', clear_text=clear_text)
 
 @app.route('/submit', methods=['POST'])
 def submit_form():
     # Convert form data to dictionary and save to YAML
-    # ... Your existing code to generate YAML ...
-
     form_data = request.form.to_dict()
     # Convert dictionary to YAML format
     yaml_data = yaml.dump(form_data, default_flow_style=False)
