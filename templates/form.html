@@ -155,7 +155,8 @@ input[type="submit"]:hover {
         <p>Medical Provider Address: <input type="text" name="medical_provider_address" placeholder="Medical Provider Address" value="456 Downton St, Denver, CO, USA, 80027"></p>
         <p>Date of Service: <input type="date" name="serviceDate" value="2023-01-01"></p>
         <p>Total Debt Amount: <input type="number" name="debtAmount" placeholder="Total Debt Amount" value="5000"></p>
-        <p>Do you have an itemized bill? <input type="checkbox" name="itemizedBill" value="yes" checked></p>
+        <p>Do you have an itemized bill? <input type="radio" name="itemizedBill" value="yes">
+        <input type="radio" name="itemizedBill" value="no" checked> No</p>
 
 
         <!-- Insurance Information -->
@@ -184,10 +185,10 @@ input[type="submit"]:hover {
         <p>Can you afford a partial payment? <br/>
         <input type="radio" name="partialPayment" value="yes" checked> Yes
         <input type="radio" name="partialPayment" value="no" > No</p>
-        <p>Affordable Payment Amount <input type="number" name="affordableAmount" placeholder="Affordable Payment Amount" value="1000"></p>
+        <p>Affordable Payment Amount: <input type="number" name="affordableAmount" placeholder="Affordable Payment Amount" value="1000"></p>
 
         <!-- Patient's Remarks -->
-        <p>Seeking assistance for bill reduction<br/><textarea name="additionalComments" rows="4" cols="50" placeholder="Any Other Information or Context">Seeking assistance for bill reduction</textarea></p>
+        <p>Any Other Information or Context:<br/><textarea name="additionalComments" rows="4" cols="50" placeholder="Any Other Information or Context">Seeking assistance for bill reduction</textarea></p>
 
         <!-- Consent and Confirmation -->
         <p class="checkbox-container">
