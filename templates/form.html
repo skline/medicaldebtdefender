@@ -149,30 +149,61 @@ input[type="submit"]:hover {
         <p>Current Address: <input type="text" name="patient_address" placeholder="Current Address" value="123 Main St, Anytown, CA, USA, 90027"></p>
         <p>Contact Number: <input type="tel" name="patient_contactNumber" placeholder="Contact Number" value="303-555-1234"></p>
         <p>Email Address: <input type="email" name="patient_email" placeholder="Email Address" value="johndoe@example.com"></p>
+        <!-- Medical Bill Details Section -->
 
         <!-- Debt Specifics -->
-        <p>Medical Provider Name: <input type="text" name="medical_provider_name" placeholder="Medical Provider Name" value="Dr. Spencer Kline"></p>
-        <p>Medical Provider Address: <input type="text" name="medical_provider_address" placeholder="Medical Provider Address" value="456 Downton St, Denver, CO, USA, 80027"></p>
-        <p>Date of Service: <input type="date" name="serviceDate" value="2023-01-01"></p>
         <p>Total Debt Amount: <input type="number" name="debtAmount" placeholder="Total Debt Amount" value="5000"></p>
-        <p>Do you have an itemized bill? <input type="radio" name="itemizedBill" value="yes"> Yes
-        <input type="radio" name="itemizedBill" value="no" checked> No</p>
+        <p>Please describe the medical services or items charged as you understand them: <br/><textarea name="serviceDescription" rows="4" cols="50" placeholder="Please describe the medical services or items charged as you understand them.">General consultation and X-ray</textarea></p>
+        <p>Date of Service: <input type="date" name="serviceDate" value="2023-01-01"></p>
+        <p>Have you received all associated bills for your service or procedure? <br/>
+            <input type="radio" name="allBillsReceived" value="yes"> Yes
+            <input type="radio" name="allBillsReceived" value="no"> No
+            <input type="radio" name="allBillsReceived" value="unsure" checked> Unsure
 
+        </p>
+        <p>Do you have an itemized bill? <br/>
+            <input type="radio" name="itemizedBill" value="yes"> Yes
+            <input type="radio" name="itemizedBill" value="no" checked> No
+            <input type="radio" name="billFairness" value="unsure" checked> Unsure
+
+        </p>
 
         <!-- Insurance Information -->
-        <p>Was it covered by insurance? <input type="radio" name="insuranceCoverage" value="yes"> Yes
-        <input type="radio" name="insuranceCoverage" value="no" checked> No</p>
-        <p>Insurance Provider: <input type="text" name="insuranceProvider" placeholder="Insurance Provider" value="No Insurance"></p>
-        <p>Reason for Insurance Denial: <input type="text" name="insuranceDenialReason" placeholder="Reason for Insurance Denial" value="No Insurance"></p>
+        <p>Was it covered by insurance? <br/>
+            <input type="radio" name="insuranceCoverage" value="yes"> Yes
+            <input type="radio" name="insuranceCoverage" value="no" checked> No
+            <input type="radio" name="insuranceCoverage" value="unsure"> Unsure
+
+        </p>
+        <p>Have you received an Explanation of Benefits (EOB) from your insurance company? <br/>
+            <input type="radio" name="insuranceEOB" value="yes checked"> Yes
+            <input type="radio" name="insuranceEOB" value="no"> No
+            <input type="radio" name="insuranceEOB" value="unsure"> Unsure
+
+        </p>
+        <p>Do you understand your insurance deductible and co-insurance? <br/>
+            <input type="radio" name="understandDeductible" value="yes"> Yes
+            <input type="radio" name="understandDeductible" value="no"> No
+            <input type="radio" name="understandDeductible" value="unsure" checked> Unsure
+        </p>
+
+        <!-- Bill Assessment Section -->
+        <p>Do you believe the bill is fair and accurate based on your understanding? <br/>
+            <input type="radio" name="billFairness" value="yes"> Yes
+            <input type="radio" name="billFairness" value="no"> No
+            <input type="radio" name="billFairness" value="unsure" checked> Unsure
+
+        </p>
+        <p>If unsure, would you like assistance in comparing charges with standard rates? <br/>
+            <input type="radio" name="compareCharges" value="yes" checked> Yes
+            <input type="radio" name="compareCharges" value="no"> No
+        </p>
+        <p>Do you have any information on how these charges compare to standard rates for similar services in our region?<br/> <textarea name="chargeComparison" rows="4" cols="50" placeholder="Do you have any information on how these charges compare to standard rates for similar services in our region?">Rates seem higher than usual</textarea></p>
 
         <!-- Patient Perspective Questions -->
-        <p>Please describe the medical services or items charged as you understand them: <br/><textarea name="serviceDescription" rows="4" cols="50" placeholder="Please describe the medical services or items charged as you understand them.">General consultation and X-ray</textarea></p>
-        <p>Do you have any information on how these charges compare to standard rates for similar services in our region?<br/> <textarea name="chargeComparison" rows="4" cols="50" placeholder="Do you have any information on how these charges compare to standard rates for similar services in our region?">Rates seem higher than usual</textarea></p>
         <p>For services billed on a time basis, what information were you provided about how the time was calculated and which medical staff were involved?<br/> <textarea name="durationAndStaff" rows="4" cols="50" placeholder="For services billed on a time basis, what information were you provided about how the time was calculated and which medical staff were involved?">Consultation lasted 30 minutes with Dr. Smith</textarea></p>
 
         <!-- Patient Inquiry for Documentation and Justifications -->
-        <p>Have you received any documentation justifying the costs associated with each service or procedure?<br/> <textarea name="costJustification" rows="4" cols="50" placeholder="Have you received any documentation justifying the costs associated with each service or procedure?">No detailed justification provided</textarea></p>
-        <p>Have you been provided with an audit trail or detailed billing progression for your case?<br/><textarea name="auditTrail" rows="4" cols="50" placeholder="Have you been provided with an audit trail or detailed billing progression for your case?">No audit trail available</textarea></p>
         <p>Are you aware of the hospital’s policy on correcting or adjusting charges that are found to be erroneous or unjustified? <br/><textarea name="correctionPolicy" rows="4" cols="50" placeholder="Are you aware of the hospital’s policy on correcting or adjusting charges that are found to be erroneous or unjustified?">Not aware of any such policy</textarea></p>
 
         <!-- Financial Hardship -->
