@@ -198,13 +198,8 @@ input[type="submit"]:hover {
             <input type="radio" name="compareCharges" value="yes" checked> Yes
             <input type="radio" name="compareCharges" value="no"> No
         </p>
-        <p>Do you have any information on how these charges compare to standard rates for similar services in our region?<br/> <textarea name="chargeComparison" rows="4" cols="50" placeholder="Do you have any information on how these charges compare to standard rates for similar services in our region?">Rates seem higher than usual</textarea></p>
 
-        <!-- Patient Perspective Questions -->
-        <p>For services billed on a time basis, what information were you provided about how the time was calculated and which medical staff were involved?<br/> <textarea name="durationAndStaff" rows="4" cols="50" placeholder="For services billed on a time basis, what information were you provided about how the time was calculated and which medical staff were involved?">Consultation lasted 30 minutes with Dr. Smith</textarea></p>
-
-        <!-- Patient Inquiry for Documentation and Justifications -->
-        <p>Are you aware of the hospital’s policy on correcting or adjusting charges that are found to be erroneous or unjustified? <br/><textarea name="correctionPolicy" rows="4" cols="50" placeholder="Are you aware of the hospital’s policy on correcting or adjusting charges that are found to be erroneous or unjustified?">Not aware of any such policy</textarea></p>
+   
 
         <!-- Financial Hardship -->
         <p>Are you experiencing financial hardship? <input type="radio" name="financialHardship" value="yes" checked> Yes
@@ -281,5 +276,18 @@ document.getElementById('dataForm').addEventListener('submit', function(e) {
     });
 });
     </script>
+    <script type="text/javascript">
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+              window.voiceflow.chat.load({
+                verify: { projectID: '657cb322ad23dfd497229e92' },
+                url: 'https://general-runtime.voiceflow.com',
+                versionID: 'production'
+              });
+            }
+            v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+        })(document, 'script');
+      </script>
 </body>
 </html>
