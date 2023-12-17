@@ -20,7 +20,7 @@ DB_PASS = os.getenv('DB_PASS')
 def get_real_name():
     # Get the 'name' from the query parameters
     name = request.args.get('name')
-    print(DB_PASS)
+    name = (name).lower()
     # Connect to the database
     conn = psycopg2.connect(
         dbname=DB_NAME, 
@@ -33,7 +33,7 @@ def get_real_name():
     cur = conn.cursor()
 
     # Query the database for the real name
-    cur.execute('SELECT real_name FROM client_names WHERE name = %s', (name,))
+    cur.execute('SELECT real_name FROM client_names WHERE lower(name) = lower(%s)', (name,))
     result = cur.fetchone()
 
     # Close the cursor and the connection
