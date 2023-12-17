@@ -7,6 +7,8 @@ from markupsafe import Markup
 app = Flask(__name__)
 import psycopg2
 import os
+import urllib.parse
+
 
 # Database connection parameters
 DB_HOST = 'dbmdd.postgres.database.azure.com'
@@ -109,10 +111,8 @@ def submit_form():
     ]
     )
 
-
+    print(completion.choices[0].message)
     response = completion.choices[0].message.content
-    print(response)
-
     response = response.replace('\n', '<br>')
     formatted_response = Markup(f"<div><p>{response}</p></div>")
     return Response(formatted_response, mimetype='text/html')

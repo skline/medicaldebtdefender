@@ -10,3 +10,7 @@ completion = client.chat.completions.create(
 )
 
 print(completion.choices[0].message)
+
+curl -X POST https://medicaldebtdefender.com/add_client \
+     -H "Content-Type: application/json" \
+     -d '{"name": "exampleNameNew", "real_name": "Example Real Name New"}'
