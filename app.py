@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, Response, jsonify
 import yaml
-import openai
+from openai import OpenAI
+from markupsafe import Markup
+client = OpenAI()
 from markupsafe import Markup
 app = Flask(__name__)
 import psycopg2
@@ -99,7 +101,7 @@ def submit_form():
     yaml_data = yaml.dump(form_data, default_flow_style=False)
 
 
-    completion = openai.ChatCompletion.create(
+    completion = client.chat.completions.create(
     model="gpt-4-1106-preview",
     messages=[
         {"role": "system", "content": "You are a medical debt advocate who is helping a patient create a letter to their medical provider. The letter should primarily consist of specific and polite questions seeking clarification and assistance regarding their medical debt. Ensure the letter is respectful and professional."},
