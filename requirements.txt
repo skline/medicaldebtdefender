@@ -68,3 +68,4 @@ wasabi==1.1.2
 weasel==0.3.4
 Werkzeug==3.0.1
 zipp==3.17.0
+psycopg2==2.9.9
