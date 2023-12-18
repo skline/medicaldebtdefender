@@ -16,6 +16,56 @@ DB_NAME = 'postgres'
 DB_USER = 'skline'
 DB_PASS = os.getenv('DB_PASS')
 
+@app.route('/get_avg_fee', methods=['GET'])
+def get_avg_fee():
+    # Get the 'cpt_code' from the query parameters
+    cpt_code = request.args.get('cpt_code')
+    billable_units = request.args.get('billable_units', default=1, type=float)
+    if not billable_units:
+        billable_units = 1
+
+
+    # Connect to the database
+    conn = psycopg2.connect(
+        dbname=DB_NAME, 
+        user=DB_USER, 
+        password=DB_PASS, 
+        host=DB_HOST
+    )
+
+    # Create a cursor object
+    cur = conn.cursor()
+
+    # Query the database for the average fee information
+    query = """
+    SELECT a.hcpcs_code as cpt_code, c.procedure_code_descriptions as description, a.avg_fee*%s
+    FROM public.aggregated_medicare_fees a
+    LEFT JOIN public.cpt_codes c ON c.cpt_code = a.hcpcs_code
+    WHERE a.hcpcs_code = %s
+    """
+    cur.execute(query, (billable_units,cpt_code,))
+
+    # Fetch the result
+    result = cur.fetchone()
+
+    # Close the cursor and the connection
+    cur.close()
+    conn.close()
+
+    # If no result is found, return an error
+    if result is None:
+        response = jsonify({'error': 'CPT code not found'}), 404
+    else:
+        # If a result is found, return the average fee information
+        response_data = {
+            'cpt_code': result[0],
+            'description': result[1],
+            'avg_fee': result[2]
+        }
+        response = jsonify(response_data), 200
+
+    return response
+
 @app.route('/get_real_name', methods=['GET'])
 def get_real_name():
     # Get the 'name' from the query parameters
