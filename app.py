@@ -66,6 +66,47 @@ def get_avg_fee():
 
     return response
 
+
+@app.route('/add_lead', methods=['POST'])
+def add_lead():
+    # Parse data from request
+    data = request.json
+    email = data.get('email')
+    name = data.get('name')
+
+    # Validate data
+    if not name or not email:
+        return jsonify({'error': 'Missing name or email'}), 400
+
+    # Connect to the database
+    try:
+        conn = psycopg2.connect(
+            dbname=DB_NAME, 
+            user=DB_USER, 
+            password=DB_PASS, 
+            host=DB_HOST
+        )
+        cur = conn.cursor()
+
+        # Insert data into the database
+        cur.execute(''' 
+    INSERT INTO public.leads (email, name) 
+    VALUES (%s, %s) 
+    ON CONFLICT (email) DO UPDATE 
+    SET name = EXCLUDED.name
+    ''', (email, name))
+        conn.commit()
+
+        # Close the connection
+        cur.close()
+        conn.close()
+
+        return jsonify({'success': 'Client added successfully'}), 201
+
+    except Exception as e:
+        # Handle database connection errors
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/get_real_name', methods=['GET'])
 def get_real_name():
     # Get the 'name' from the query parameters
@@ -99,45 +140,6 @@ def get_real_name():
         response = jsonify({'real_name': real_name}), 200
 
     return response
-@app.route('/add_client', methods=['POST'])
-def add_client():
-    # Parse data from request
-    data = request.json
-    name = data.get('name')
-    real_name = data.get('real_name')
-
-    # Validate data
-    if not name or not real_name:
-        return jsonify({'error': 'Missing name or real_name'}), 400
-
-    # Connect to the database
-    try:
-        conn = psycopg2.connect(
-            dbname=DB_NAME, 
-            user=DB_USER, 
-            password=DB_PASS, 
-            host=DB_HOST
-        )
-        cur = conn.cursor()
-
-        # Insert data into the database
-        cur.execute('''
-    INSERT INTO public.client_names (name, real_name) 
-    VALUES (%s, %s) 
-    ON CONFLICT (name) DO UPDATE 
-    SET real_name = EXCLUDED.real_name
-''', (name, real_name))
-        conn.commit()
-
-        # Close the connection
-        cur.close()
-        conn.close()
-
-        return jsonify({'success': 'Client added successfully'}), 201
-
-    except Exception as e:
-        # Handle database connection errors
-        return jsonify({'error': str(e)}), 500
 
 @app.route('/')
 def form():
