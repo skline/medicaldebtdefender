@@ -38,10 +38,15 @@ def get_avg_fee():
 
     # Query the database for the average fee information
     query = """
-    SELECT a.hcpcs_code as cpt_code, c.procedure_code_descriptions as description, a.avg_fee*%s
-    FROM public.aggregated_medicare_fees a
-    LEFT JOIN public.cpt_codes c ON c.cpt_code = a.hcpcs_code
-    WHERE a.hcpcs_code = %s
+SELECT
+    cec.cpt_code,
+    cec.description,
+    cec.expected_cost * %s AS adjusted_expected_cost
+FROM
+    cpt_code_expected_costs cec
+WHERE
+    cec.cpt_code = %s;
+
     """
     cur.execute(query, (billable_units,cpt_code,))
 
@@ -168,6 +173,27 @@ def submit_form():
     response = response.replace('\n', '<br>')
     formatted_response = Markup(f"<div><p>{response}</p></div>")
     return Response(formatted_response, mimetype='text/html')
+
+@app.route('/create_letter', methods=['POST'])
+def create_letter():
+    # Convert form data to dictionary and save to YAML
+    form_data = request.get_json()
+    # Convert dictionary to YAML format
+    yaml_data = yaml.dump(form_data, default_flow_style=False)
+
+    completion = client.chat.completions.create(
+    model="gpt-4-1106-preview",
+    messages=[
+        {"role": "system", "content": "You are a medical debt advocate who is helping a patient create a letter to their medical provider. The letter should primarily consist of specific and polite questions seeking clarification and assistance regarding their medical debt. Ensure the letter is respectful and professional."},
+        {"role": "user", "content": 'Compose the letter using this patient’s data in YAML format. The letter should ask the provider questions about the debt, the billing process, and any possible debt relief options.  Do not include the YAML in the output. Use pargraphs, do not make each new sentence a newline. You have the patient\'s name in the yaml. Do not use placeholders, only use text in the yaml file Data:\n' + yaml_data}
+    ]
+    )
+
+    print(completion.choices[0].message)
+    response = completion.choices[0].message.content
+    response = jsonify({'response': response}), 200
+    return response
+
 
 
 
