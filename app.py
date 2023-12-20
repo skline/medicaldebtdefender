@@ -7,7 +7,19 @@ from markupsafe import Markup
 app = Flask(__name__)
 import psycopg2
 import os
-import urllib.parse
+import json
+import time
+from packaging import version
+import functions
+assistant_id = functions.create_assistant(client)
+
+
+@app.route('/start', methods=['GET'])
+def start_conversation():
+  print("Starting a new conversation...")  # Debugging line
+  thread = client.beta.threads.create()
+  print(f"New thread created with ID: {thread.id}")  # Debugging line
+  return jsonify({"thread_id": thread.id})
 
 
 # Database connection parameters
@@ -15,6 +27,63 @@ DB_HOST = 'dbmdd.postgres.database.azure.com'
 DB_NAME = 'postgres'
 DB_USER = 'skline'
 DB_PASS = os.getenv('DB_PASS')
+
+@app.route('/chat', methods=['POST'])
+def chat():
+  data = request.json
+  thread_id = data.get('thread_id')
+  user_input = data.get('message', '')
+
+  if not thread_id:
+    return jsonify({"error": "Missing thread_id"}), 400
+
+  # Add the user's message to the thread
+  client.beta.threads.messages.create(thread_id=thread_id,
+                                      role="user",
+                                      content=user_input)
+
+  # Run the Assistant
+  run = client.beta.threads.runs.create(thread_id=thread_id,
+                                        assistant_id=assistant_id)
+
+  # Check if the Run requires action (function call)
+  while True:
+    run_status = client.beta.threads.runs.retrieve(thread_id=thread_id,
+                                                   run_id=run.id)
+
+    if run_status.status == 'completed':
+      break
+    elif run_status.status == 'requires_action':
+      # Handle function calls
+      for tool_call in run_status.required_action.submit_tool_outputs.tool_calls:
+        if tool_call.function.name == "get_avg_fee":
+          arguments = json.loads(tool_call.function.arguments)
+          output = functions.get_avg_fee(arguments["cpt_code"],
+                                         arguments["billable_units"])
+        elif tool_call.function.name == "create_lead":
+          arguments = json.loads(tool_call.function.arguments)
+          print(arguments)
+          output = functions.create_lead(
+              arguments["email"],
+              arguments["name"],
+          )
+
+        # Submit the function output
+        client.beta.threads.runs.submit_tool_outputs(thread_id=thread_id,
+                                                     run_id=run.id,
+                                                     tool_outputs=[{
+                                                         "tool_call_id":
+                                                         tool_call.id,
+                                                         "output":
+                                                         json.dumps(output)
+                                                     }])
+      time.sleep(1)  # Wait for a second before checking again
+
+  # Retrieve and return the latest message from the assistant
+  messages = client.beta.threads.messages.list(thread_id=thread_id)
+  response = messages.data[0].content[0].text.value
+  return jsonify({"response": response})
+
 
 @app.route('/get_avg_fee', methods=['GET'])
 def get_avg_fee():
@@ -146,11 +215,15 @@ def get_real_name():
 
     return response
 
-@app.route('/')
+@app.route('/form')
 def form():
     clear_text = 'clear' in request.args
 
     return render_template('form.html', clear_text=clear_text)
+
+@app.route('/')
+def chatbot():
+   return render_template('chatbot.html')
 
 @app.route('/submit', methods=['POST'])
 def submit_form():
