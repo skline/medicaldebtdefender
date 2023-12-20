@@ -13,6 +13,7 @@ from packaging import version
 import functions
 assistant_id = functions.create_assistant(client)
 from werkzeug.utils import secure_filename
+from PIL import Image
 
 
 
@@ -29,13 +30,34 @@ DB_HOST = 'dbmdd.postgres.database.azure.com'
 DB_NAME = 'postgres'
 DB_USER = 'skline'
 DB_PASS = os.getenv('DB_PASS')
-
+def convert_image_to_pdf(image_path, output_path):
+    image = Image.open(image_path)
+    if image.mode == "RGBA":
+        image = image.convert("RGB")
+    pdf_path = output_path
+    image.save(pdf_path, "PDF", resolution=100.0)
+    return pdf_path
 @app.route('/chat', methods=['POST'])
 def chat():
   data = request.form
   thread_id = data.get('thread_id')
   user_input = data.get('message', '')
   file = request.files.get('file')
+  if file:
+    filename = secure_filename(file.filename)
+    file.save(filename)
+    pdf_filename = filename.rsplit('.', 1)[0] + '.pdf'
+    convert_image_to_pdf(filename, pdf_filename)
+    uploaded_file = client.files.create(
+        file=open(pdf_filename, "rb"),
+        purpose='assistants'
+    )
+
+    # Add the user's message and file to the thread
+
+  else:
+    # Add the user's message to the thread
+    print('no file')
 
   if not thread_id:
     return jsonify({"error": "Missing thread_id"}), 400
@@ -85,6 +107,9 @@ def chat():
   # Retrieve and return the latest message from the assistant
   messages = client.beta.threads.messages.list(thread_id=thread_id)
   response = messages.data[0].content[0].text.value
+  if file:
+    os.remove(filename)  # remove the file after upload
+    os.remove(pdf_filename)
   return jsonify({"response": response})
 
 
