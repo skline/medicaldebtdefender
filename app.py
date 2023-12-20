@@ -12,6 +12,8 @@ import time
 from packaging import version
 import functions
 assistant_id = functions.create_assistant(client)
+from werkzeug.utils import secure_filename
+
 
 
 @app.route('/start', methods=['GET'])
@@ -30,9 +32,10 @@ DB_PASS = os.getenv('DB_PASS')
 
 @app.route('/chat', methods=['POST'])
 def chat():
-  data = request.json
+  data = request.form
   thread_id = data.get('thread_id')
   user_input = data.get('message', '')
+  file = request.files.get('file')
 
   if not thread_id:
     return jsonify({"error": "Missing thread_id"}), 400

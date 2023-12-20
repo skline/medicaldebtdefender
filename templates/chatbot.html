@@ -19,6 +19,7 @@
     </div>
     <form id="chatForm">
         <input type="text" id="userInput" placeholder="Type your message here...">
+        <input type="file" id="userFile">
         <button type="submit">Send</button>
         <span id="loading" style="display: none;">...</span>
     </form>
@@ -34,39 +35,44 @@
         });
     
         document.getElementById('chatForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            var userInput = document.getElementById('userInput').value;
-            var submitButton = document.querySelector('#chatForm button');
-            var loadingDots = document.getElementById('loading');
-    
-            // Disable the button and show the loading dots
-            submitButton.disabled = true;
-            loadingDots.style.display = 'inline';
-    
-            fetch('/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({message: userInput, thread_id: thread_id}),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Display the chatbot's response in the chatbox
-                var chatbox = document.getElementById('chatbox');
-                chatbox.innerHTML += '<p>User: ' + userInput + '</p>';
-                chatbox.innerHTML += '<p>Chatbot: ' + data.response + '</p>';
-    
-                // Re-enable the button and hide the loading dots
-                submitButton.disabled = false;
-                loadingDots.style.display = 'none';
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                // Re-enable the button and hide the loading dots even if there's an error
-                submitButton.disabled = false;
-                loadingDots.style.display = 'none';
-            });
-        });
+    e.preventDefault();
+    var userInput = document.getElementById('userInput').value;
+    var userFile = document.getElementById('userFile').files[0];
+    var submitButton = document.querySelector('#chatForm button');
+    var loadingDots = document.getElementById('loading');
+
+    // Disable the button and show the loading dots
+    submitButton.disabled = true;
+    loadingDots.style.display = 'inline';
+
+    var formData = new FormData();
+formData.append('message', userInput);
+formData.append('thread_id', thread_id);
+if (userFile) {
+    formData.append('file', userFile);
+}
+
+fetch('/chat', {
+    method: 'POST',
+    body: formData,
+})
+    .then(response => response.json())
+    .then(data => {
+        // Display the chatbot's response in the chatbox
+        var chatbox = document.getElementById('chatbox');
+        chatbox.innerHTML += '<p>User: ' + userInput + '</p>';
+        chatbox.innerHTML += '<p>Chatbot: ' + data.response + '</p>';
+
+        // Re-enable the button and hide the loading dots
+        submitButton.disabled = false;
+        loadingDots.style.display = 'none';
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        // Re-enable the button and hide the loading dots even if there's an error
+        submitButton.disabled = false;
+        loadingDots.style.display = 'none';
+    });
+});
     </script>
 </html>
