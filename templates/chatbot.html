@@ -181,6 +181,8 @@ label[for="userFile"],
             var userFiles = document.getElementById('userFile').files;
             var submitButton = document.querySelector('#chatForm button');
             var overlay = document.getElementById('overlay');
+
+            submitButton.disabled = true;
       
             // Show the overlay
             overlay.style.display = 'flex';
@@ -217,11 +219,12 @@ label[for="userFile"],
     chatbox.appendChild(chatbotMessage);
 
     // Scroll to the bottom of the chatbox to show the newest messages
-    chatbox.scrollTop = chatbox.scrollHeight;
+    const userMessageTop = userMessage.offsetTop;
+    chatbox.scrollTop = userMessageTop - chatbox.offsetTop - 10;
 
     // Clear the input fields
-    document.getElementById('chatForm').reset();
-    document.getElementById('fileNames').textContent = '';
+    document.getElementById('userInput').value = ''; // Clear the textarea
+    document.getElementById('userFile').value = ''; // Clear the file input if necessary
 })
             .catch((error) => {
                 console.error('Error:', error);
