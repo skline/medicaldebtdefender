@@ -56,33 +56,42 @@ def chat():
   data = request.form
   thread_id = data.get('thread_id')
   user_input = data.get('message', '')
-  file = request.files.get('file')
-  if file:
-    filename = file.filename
-    file.save(filename)
-    pdf_filename = filename.rsplit('.', 1)[0] + '.pdf'
-    convert_image_to_pdf(filename, pdf_filename)
-    text = convert_image_to_text(filename)
+  files = request.files.getlist('file')
+  print(files)
 
+  if not files:
+     file = None
+  uploaded_file_ids = []
+  file_names = []
+  pdf_filenames = []
+  if files:
+    text=''
+    for file in files:
+        filename = secure_filename(file.filename)
+        file_names.append(filename)
+        file.save(filename)
+        pdf_filename = filename.rsplit('.', 1)[0] + '.pdf'
+        pdf_filenames.append(pdf_filename)
+        convert_image_to_pdf(filename, pdf_filename)
+        text += convert_image_to_text(filename)
 
-    uploaded_file = client.files.create(
-        file=open(pdf_filename, "rb"),
-        purpose='assistants'
-    )
-
-    # Add the user's message and file to the thread
+        uploaded_file = client.files.create(
+                file=open(pdf_filename, "rb"),
+                purpose='assistants'
+            )
+        uploaded_file_ids.append(uploaded_file.id)
 
   else:
-    # Add the user's message to the thread
+        # Add the user's message to the thread
     print('no file')
 
   if not thread_id:
     return jsonify({"error": "Missing thread_id"}), 400
-  if file:
+  if files:
     client.beta.threads.messages.create(thread_id=thread_id,
                                         role="user",
                                         content=user_input+' here is the text from the attached PDF:  '+text,
-                                        file_ids=[uploaded_file.id])
+                                        file_ids=uploaded_file_ids)
   else:
     # Add the user's message to the thread
     client.beta.threads.messages.create(thread_id=thread_id,
@@ -126,8 +135,10 @@ def chat():
   messages = client.beta.threads.messages.list(thread_id=thread_id)
   response = messages.data[0].content[0].text.value
   if file:
-    os.remove(filename)  # remove the file after upload
-    os.remove(pdf_filename)
+    for filename in file_names:
+        os.remove(filename)
+    for pdf_filename in pdf_filenames:  # remove the file after upload
+        os.remove(pdf_filename)
   return jsonify({"response": response})
 
 

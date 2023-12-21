@@ -106,7 +106,9 @@
     <form id="chatForm">
         <input type="text" id="userInput" placeholder="Type your message here...">
         <label for="userFile">📎</label>
-        <input type="file" id="userFile" aria-label="File upload">
+        <input type="file" id="userFile" name="userFile" multiple>
+        <span id="fileNames"></span> <!-- This is where the file names will be displayed -->
+        
         <button type="submit">Send</button>
         <span id="loading">...</span>
     </form>
@@ -124,7 +126,7 @@
         document.getElementById('chatForm').addEventListener('submit', function(e) {
     e.preventDefault();
     var userInput = document.getElementById('userInput').value;
-    var userFile = document.getElementById('userFile').files[0];
+    var userFiles = document.getElementById('userFile').files;
     var submitButton = document.querySelector('#chatForm button');
     var loadingDots = document.getElementById('loading');
 
@@ -135,10 +137,11 @@
     var formData = new FormData();
 formData.append('message', userInput);
 formData.append('thread_id', thread_id);
-if (userFile) {
-    formData.append('file', userFile);
+if (userFiles) {
+    for (var i = 0; i < userFiles.length; i++) {
+        formData.append('file', userFiles[i]);
+    }
 }
-
 fetch('/chat', {
     method: 'POST',
     body: formData,
@@ -154,8 +157,8 @@ fetch('/chat', {
         // Re-enable the button and hide the loading dots
         submitButton.disabled = false;
         loadingDots.style.display = 'none';
-        document.getElementById('userInput').value = '';
-        document.getElementById('userFile').value = '';
+        document.getElementById('chatForm').reset();
+        document.getElementById('fileNames').textContent = '';
     })
     .catch((error) => {
         console.error('Error:', error);
@@ -163,6 +166,10 @@ fetch('/chat', {
         submitButton.disabled = false;
         loadingDots.style.display = 'none';
     });
+});
+document.getElementById('userFile').addEventListener('change', function(e) {
+    var fileNames = Array.from(e.target.files).map(file => file.name).join(', ');
+    document.getElementById('fileNames').textContent = fileNames;
 });
     </script>
 </html>
