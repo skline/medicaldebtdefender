@@ -1,16 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Chatbot</title>
     <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 50px;
+            color: #444;
+        }
+
+        #chatbox {
+            width: 100%;
+            max-width: 350px;
+            height: 500px;
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column-reverse; /* Newest messages on top */
+        }
+
+        #chatForm {
+            padding: 20px;
+            width: 100%;
+            height: 500px;
+            max-width: 400px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        #userInput {
+            flex-grow: 1;
+            padding: 10px;
+            height: 100%;
+            width: 180%;
+            border: 2px solid #ddd;
+            border-radius: 18px;
+            outline: none;
+        }
+
+        #userInput::placeholder {
+            color: #888;
+        }
+
+        #userInput:focus {
+            border-color: #007bff;
+        }
+
+        #userFile {
+            display: none;
+        }
+
+        #chatForm label[for="userFile"],
+        #chatForm button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 18px;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            user-select: none;
+        }
+
+        #chatForm button {
+            background-color: #00d474;
+            transition: background-color 0.3s;
+        }
+
+        #chatForm button:hover {
+            background-color: #00c565;
+        }
+
+        #loading {
+            margin-left: 5px;
+            display: none;
+        }
+
         @keyframes blink {
-    0% {opacity: 0;}
-    50% {opacity: 1;}
-    100% {opacity: 0;}
-}
-#loading {
-    animation: blink 1s linear infinite;
-}
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        #loading {
+            animation: blink 1s linear infinite;
+        }
     </style>
 </head>
 <body>
@@ -19,9 +105,10 @@
     </div>
     <form id="chatForm">
         <input type="text" id="userInput" placeholder="Type your message here...">
-        <input type="file" id="userFile">
+        <label for="userFile">📎</label>
+        <input type="file" id="userFile" aria-label="File upload">
         <button type="submit">Send</button>
-        <span id="loading" style="display: none;">...</span>
+        <span id="loading">...</span>
     </form>
     <script>
         var thread_id;
@@ -60,8 +147,9 @@ fetch('/chat', {
     .then(data => {
         // Display the chatbot's response in the chatbox
         var chatbox = document.getElementById('chatbox');
-        chatbox.innerHTML += '<p>User: ' + userInput + '</p>';
         chatbox.innerHTML += '<p>Chatbot: ' + data.response + '</p>';
+
+        chatbox.innerHTML += '<p>User: ' + userInput + '</p>';
 
         // Re-enable the button and hide the loading dots
         submitButton.disabled = false;
