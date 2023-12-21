@@ -97,9 +97,35 @@ label[for="userFile"],
     flex-direction: column; /* Stack them vertically */
     margin-top: 10px; /* Optional: add some space above the div */
 }
+#overlay {
+    position: fixed;
+    top: 30%; /* Adjust this value to position the overlay higher on the screen */
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#overlay-content {
+    color: white;
+    font-size: 2rem;
+    /* Add a flashing animation */
+    animation: flashing 1s infinite;
+}
+
+@keyframes flashing {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
     </style>
 </head>
 <body>
+    <div id="overlay" style="display: none;">
+        <div id="overlay-content">Loading...</div>
+      </div>
     <div id="chatbox">
         <!-- Chat history will be displayed here -->
     </div>
@@ -112,11 +138,9 @@ label[for="userFile"],
             <input type="file" id="userFile" name="userFile" multiple aria-label="File upload">
             <span id="fileNames"></span> <!-- This is where the file names will be displayed -->
         </div>
-        <span id="loading">...</span>
     </form>
     
     <script>
-        
         var thread_id;
         fetch('/start')
         .then(response => response.json())
@@ -126,64 +150,64 @@ label[for="userFile"],
         .catch((error) => {
             console.error('Error:', error);
         });
-    
+      
         document.getElementById('chatForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var userInput = document.getElementById('userInput').value;
-    var userFiles = document.getElementById('userFile').files;
-    var submitButton = document.querySelector('#chatForm button');
-    var loadingDots = document.getElementById('loading');
-
-    // Disable the button and show the loading dots
-    submitButton.disabled = true;
-    loadingDots.style.display = 'inline';
-
-    var formData = new FormData();
-formData.append('message', userInput);
-formData.append('thread_id', thread_id);
-if (userFiles) {
-    for (var i = 0; i < userFiles.length; i++) {
-        formData.append('file', userFiles[i]);
-    }
-}
-fetch('/chat', {
-    method: 'POST',
-    body: formData,
-})
-    .then(response => response.json())
-    .then(data => {
-        // Display the chatbot's response in the chatbox
-        var chatbox = document.getElementById('chatbox');
-        chatbox.innerHTML += '<p>User: ' + userInput + '</p>';
-        chatbox.innerHTML += '<p>Chatbot: ' + data.response + '</p>';
-
-        chatbox.scrollTop = chatbox.scrollHeight;
-
-
-        // Re-enable the button and hide the loading dots
-        submitButton.disabled = false;
-        loadingDots.style.display = 'none';
-        document.getElementById('chatForm').reset();
-        document.getElementById('fileNames').textContent = '';
-        
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        // Re-enable the button and hide the loading dots even if there's an error
-        submitButton.disabled = false;
-        loadingDots.style.display = 'none';
-    });
-});
-document.getElementById('userFile').addEventListener('change', function(e) {
-    var fileNames = Array.from(e.target.files).map(file => file.name).join(', ');
-    document.getElementById('fileNames').textContent = fileNames;
-});
-document.getElementById('userInput').addEventListener('keypress', function(e) {
-    // Check if the key pressed is 'Enter'
-    if (e.key === 'Enter') {
-        e.preventDefault(); // Prevent the default action to avoid newline in textarea
-        document.getElementById('chatForm').dispatchEvent(new Event('submit'));
-    }
-});
-    </script>
+            e.preventDefault();
+            var userInput = document.getElementById('userInput').value;
+            var userFiles = document.getElementById('userFile').files;
+            var submitButton = document.querySelector('#chatForm button');
+            var overlay = document.getElementById('overlay');
+      
+            // Show the overlay
+            overlay.style.display = 'flex';
+      
+            var formData = new FormData();
+            formData.append('message', userInput);
+            formData.append('thread_id', thread_id);
+            if (userFiles.length > 0) {
+                for (var i = 0; i < userFiles.length; i++) {
+                    formData.append('file', userFiles[i]);
+                }
+            }
+      
+            fetch('/chat', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the chatbot's response in the chatbox
+                var chatbox = document.getElementById('chatbox');
+                chatbox.innerHTML += '<p>User: ' + userInput + '</p>';
+                chatbox.innerHTML += '<p>Chatbot: ' + data.response + '</p>';
+                chatbox.scrollTop = chatbox.scrollHeight;
+      
+                // Clear the input fields
+                document.getElementById('chatForm').reset();
+                document.getElementById('fileNames').textContent = '';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                // Hide the overlay when the fetch is complete
+                overlay.style.display = 'none';
+                // Re-enable the button
+                submitButton.disabled = false;
+            });
+        });
+      
+        document.getElementById('userFile').addEventListener('change', function(e) {
+            var fileNames = Array.from(e.target.files).map(file => file.name).join(', ');
+            document.getElementById('fileNames').textContent = fileNames;
+        });
+      
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Prevent default newline in textarea
+                document.getElementById('chatForm').dispatchEvent(new Event('submit'));
+            }
+        });
+      </script>
+      
 </html>
