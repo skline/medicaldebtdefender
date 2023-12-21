@@ -17,7 +17,8 @@
         }
 
         #chatbox {
-            width: 350px;
+            width: 45%;
+            min-width: 100px;
             height: 500px;
             background-color: #fff;
             padding: 20px;
@@ -30,7 +31,8 @@
         }
 
         #chatForm {
-            width: 350px;
+            width: 25%;
+            min-width: 100px;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -120,6 +122,28 @@ label[for="userFile"],
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
+/* Chat bubble for the user */
+.user-message {
+    margin-top:10px;
+    background-color: #DCF8C6; /* Light green bubble */
+    margin-left: auto; /* Aligns the bubble to the right */
+    padding: 10px;
+    border-radius: 18px;
+    max-width: 80%;
+    word-wrap: break-word;
+    margin-bottom: 10px;
+}
+
+/* Chat bubble for the chatbot */
+.chatbot-message {
+    background-color: #E5E5EA; /* Light grey bubble */
+    margin-right: auto; /* Aligns the bubble to the left */
+    padding: 10px;
+    border-radius: 18px;
+    max-width: 80%;
+    word-wrap: break-word;
+    margin-bottom: 10px;
+}
     </style>
 </head>
 <body>
@@ -130,7 +154,7 @@ label[for="userFile"],
         <!-- Chat history will be displayed here -->
     </div>
     <form id="chatForm">
-        <textarea id="userInput" placeholder="Type your message here..."></textarea>
+        <textarea id="userInput" placeholder="Type your message here...">Can you please help me with my medical bill?</textarea>
         <button type="submit">Send</button>
         
         <!-- Wrap the file input and filenames in a div with class .file-input-container -->
@@ -176,16 +200,29 @@ label[for="userFile"],
             })
             .then(response => response.json())
             .then(data => {
-                // Display the chatbot's response in the chatbox
-                var chatbox = document.getElementById('chatbox');
-                chatbox.innerHTML += '<p>User: ' + userInput + '</p>';
-                chatbox.innerHTML += '<p>Chatbot: ' + data.response + '</p>';
-                chatbox.scrollTop = chatbox.scrollHeight;
-      
-                // Clear the input fields
-                document.getElementById('chatForm').reset();
-                document.getElementById('fileNames').textContent = '';
-            })
+    // Display the chatbot's response in the chatbox
+    var chatbox = document.getElementById('chatbox');
+
+    // Create new elements for user and chatbot messages
+    let userMessage = document.createElement('div');
+    userMessage.classList.add('user-message');
+    userMessage.textContent = userInput; // No need for 'User: ' prefix
+    let chatbotMessage = document.createElement('div');
+    chatbotMessage.classList.add('chatbot-message');
+    chatbotMessage.textContent = data.response; // No need for 'Chatbot: ' prefix
+
+    // Append new messages to the chatbox
+    chatbox.appendChild(userMessage);
+    chatbox.appendChild(chatbotMessage);
+
+    // Scroll to the bottom of the chatbox to show the newest messages
+    chatbox.scrollTop = chatbox.scrollHeight;
+    chatbox.scrollTop = 0;
+
+    // Clear the input fields
+    document.getElementById('chatForm').reset();
+    document.getElementById('fileNames').textContent = '';
+})
             .catch((error) => {
                 console.error('Error:', error);
             })
