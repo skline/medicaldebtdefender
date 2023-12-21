@@ -37,7 +37,7 @@
             flex-direction: column;
             gap: 8px;
             padding:20px;
-            height:500px;
+            height:550px;
         }
 
         #userInput,
@@ -53,7 +53,7 @@ label[for="userFile"],
 
 #userInput {
     height: auto; /* Adjust height as needed or keep it auto */
-    height: 70%; /* Set a minimum height */
+    height: 100%; /* Set a minimum height */
     resize: vertical; /* Allow vertical resizing */
     border-color: transparent; /* Optional: hides the border if you prefer */
     padding: 10px; /* Padding inside the textarea */
@@ -97,7 +97,7 @@ label[for="userFile"],
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     flex-direction: column; /* Stack them vertically */
-    margin-top: 10px; /* Optional: add some space above the div */
+    margin-top: 10%; /* Optional: add some space above the div */
 }
 #overlay {
     position: fixed;
@@ -160,9 +160,9 @@ label[for="userFile"],
         <!-- Wrap the file input and filenames in a div with class .file-input-container -->
         <div class="file-input-container">
             <input type="file" id="userFile" name="userFile" multiple aria-label="File upload">
-            <span id="fileNames"></span> <!-- This is where the file names will be displayed -->
         </div>
     </form>
+
     
     <script>
         var thread_id;
