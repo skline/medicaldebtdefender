@@ -134,6 +134,8 @@ def chat():
   # Retrieve and return the latest message from the assistant
   messages = client.beta.threads.messages.list(thread_id=thread_id)
   response = messages.data[0].content[0].text.value
+  response = response.replace("\n", "<br>")
+  print(response)
   if file:
     for filename in file_names:
         os.remove(filename)

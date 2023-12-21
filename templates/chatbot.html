@@ -207,9 +207,10 @@ label[for="userFile"],
     let userMessage = document.createElement('div');
     userMessage.classList.add('user-message');
     userMessage.textContent = userInput; // No need for 'User: ' prefix
+
     let chatbotMessage = document.createElement('div');
     chatbotMessage.classList.add('chatbot-message');
-    chatbotMessage.textContent = data.response; // No need for 'Chatbot: ' prefix
+    chatbotMessage.innerHTML = data.response; // Use innerHTML to render HTML content
 
     // Append new messages to the chatbox
     chatbox.appendChild(userMessage);
@@ -217,7 +218,6 @@ label[for="userFile"],
 
     // Scroll to the bottom of the chatbox to show the newest messages
     chatbox.scrollTop = chatbox.scrollHeight;
-    chatbox.scrollTop = 0;
 
     // Clear the input fields
     document.getElementById('chatForm').reset();
