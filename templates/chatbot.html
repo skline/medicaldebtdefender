@@ -66,6 +66,8 @@ fetch('/chat', {
         // Re-enable the button and hide the loading dots
         submitButton.disabled = false;
         loadingDots.style.display = 'none';
+        document.getElementById('userInput').value = '';
+        document.getElementById('userFile').value = '';
     })
     .catch((error) => {
         console.error('Error:', error);

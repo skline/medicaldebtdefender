@@ -34,30 +34,6 @@ def create_assistant(client):
                 "type": "retrieval"  # This adds the knowledge base as a tool
             },
             {
-                "type": "function",
-                "function": {
-                    "name": "get_avg_fee",
-                    "description":
-                    "Gets the average fee for a given CPT code and billable units",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {
-                            "cpt_code": {
-                                "type":
-                                "string",
-                                "description":
-                                "The CPT code for which to get the average fee"
-                            },
-                            "billable_units": {
-                                "type": "number",
-                                "description": "The number of billable units"
-                            }
-                        },
-                        "required": ["cpt_code"]
-                    }
-                }
-            },
-            {
                 "type": "function",  # This adds the lead capture as a tool
                 "function": {
                     "name": "create_lead",

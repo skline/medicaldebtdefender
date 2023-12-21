@@ -14,22 +14,15 @@ import functions
 assistant_id = functions.create_assistant(client)
 from werkzeug.utils import secure_filename
 from PIL import Image
+import pytesseract
 
 
+def convert_image_to_text(image_path):
+    image = Image.open(image_path)
+    text = pytesseract.image_to_string(image)
+    print(text)
+    return text
 
-@app.route('/start', methods=['GET'])
-def start_conversation():
-  print("Starting a new conversation...")  # Debugging line
-  thread = client.beta.threads.create()
-  print(f"New thread created with ID: {thread.id}")  # Debugging line
-  return jsonify({"thread_id": thread.id})
-
-
-# Database connection parameters
-DB_HOST = 'dbmdd.postgres.database.azure.com'
-DB_NAME = 'postgres'
-DB_USER = 'skline'
-DB_PASS = os.getenv('DB_PASS')
 def convert_image_to_pdf(image_path, output_path):
     image = Image.open(image_path)
     if image.mode == "RGBA":
@@ -37,6 +30,27 @@ def convert_image_to_pdf(image_path, output_path):
     pdf_path = output_path
     image.save(pdf_path, "PDF", resolution=100.0)
     return pdf_path
+
+@app.route('/start', methods=['GET'])
+def start_conversation():
+  print("Starting a new conversation...")  # Debugging line
+  thread = client.beta.threads.create()
+  print(f"New thread created with ID: {thread.id}")  # Debugging line
+  return jsonify({"thread_id": thread.id})
+def convert_image_to_pdf(image_path, output_path):
+    image = Image.open(image_path)
+    if image.mode == "RGBA":
+        image = image.convert("RGB")
+    pdf_path = output_path
+    image.save(pdf_path, "PDF", resolution=100.0)
+    return pdf_path
+
+
+# Database connection parameters
+DB_HOST = 'dbmdd.postgres.database.azure.com'
+DB_NAME = 'postgres'
+DB_USER = 'skline'
+DB_PASS = os.getenv('DB_PASS')
 @app.route('/chat', methods=['POST'])
 def chat():
   data = request.form
@@ -44,10 +58,13 @@ def chat():
   user_input = data.get('message', '')
   file = request.files.get('file')
   if file:
-    filename = secure_filename(file.filename)
+    filename = file.filename
     file.save(filename)
     pdf_filename = filename.rsplit('.', 1)[0] + '.pdf'
     convert_image_to_pdf(filename, pdf_filename)
+    text = convert_image_to_text(filename)
+
+
     uploaded_file = client.files.create(
         file=open(pdf_filename, "rb"),
         purpose='assistants'
@@ -61,11 +78,16 @@ def chat():
 
   if not thread_id:
     return jsonify({"error": "Missing thread_id"}), 400
-
-  # Add the user's message to the thread
-  client.beta.threads.messages.create(thread_id=thread_id,
-                                      role="user",
-                                      content=user_input)
+  if file:
+    client.beta.threads.messages.create(thread_id=thread_id,
+                                        role="user",
+                                        content=user_input+' here is the text from the attached PDF:  '+text,
+                                        file_ids=[uploaded_file.id])
+  else:
+    # Add the user's message to the thread
+    client.beta.threads.messages.create(thread_id=thread_id,
+                                        role="user",
+                                        content=user_input)
 
   # Run the Assistant
   run = client.beta.threads.runs.create(thread_id=thread_id,
@@ -81,11 +103,7 @@ def chat():
     elif run_status.status == 'requires_action':
       # Handle function calls
       for tool_call in run_status.required_action.submit_tool_outputs.tool_calls:
-        if tool_call.function.name == "get_avg_fee":
-          arguments = json.loads(tool_call.function.arguments)
-          output = functions.get_avg_fee(arguments["cpt_code"],
-                                         arguments["billable_units"])
-        elif tool_call.function.name == "create_lead":
+        if tool_call.function.name == "create_lead":
           arguments = json.loads(tool_call.function.arguments)
           print(arguments)
           output = functions.create_lead(
