@@ -89,7 +89,7 @@ def chat():
                                         role="user",
                                         content=user_input)
 
-  # Run the Assistant
+  # Run the Assistant®
   run = client.beta.threads.runs.create(thread_id=thread_id,
                                         assistant_id=assistant_id)
 
@@ -103,10 +103,10 @@ def chat():
     elif run_status.status == 'requires_action':
       # Handle function calls
       for tool_call in run_status.required_action.submit_tool_outputs.tool_calls:
-        if tool_call.function.name == "create_lead":
+        if tool_call.function.name == "create_lead_local":
           arguments = json.loads(tool_call.function.arguments)
           print(arguments)
-          output = functions.create_lead(
+          output = functions.create_lead_local(
               arguments["email"],
               arguments["name"],
           )

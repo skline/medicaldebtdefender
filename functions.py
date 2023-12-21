@@ -4,9 +4,15 @@ import requests
 from openai import OpenAI
 from prompts import assistant_instructions
 import urllib.parse
+import requests
+import psycopg2
 
 OPENAI_API_KEY = os.environ['OPENAI_API_KEY']
-
+# Database connection parameters
+DB_HOST = 'dbmdd.postgres.database.azure.com'
+DB_NAME = 'postgres'
+DB_USER = 'skline'
+DB_PASS = os.getenv('DB_PASS')
 
 # Create or load assistant
 def create_assistant(client):
@@ -36,7 +42,7 @@ def create_assistant(client):
             {
                 "type": "function",  # This adds the lead capture as a tool
                 "function": {
-                    "name": "create_lead",
+                    "name": "create_lead_local",
                     "description":
                     "Capture lead details and save to Airtable.",
                     "parameters": {
@@ -67,6 +73,27 @@ def create_assistant(client):
 
   return assistant_id
 
+def create_lead_local(email, name):
+    conn = psycopg2.connect(
+        dbname=DB_NAME, 
+        user=DB_USER, 
+        password=DB_PASS, 
+        host=DB_HOST
+    )
+    cur = conn.cursor()
+
+        # Insert data into the database
+    cur.execute(''' 
+    INSERT INTO public.leads (email, name) 
+    VALUES (%s, %s) 
+    ON CONFLICT (email) DO UPDATE 
+    SET name = EXCLUDED.name
+    ''', (email, name))
+    conn.commit()
+
+        # Close the connection
+    cur.close()
+    conn.close()
 
 def create_lead(email, name):
   url = "https://medicaldebtdefender.com/add_lead"
