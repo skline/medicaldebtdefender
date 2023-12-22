@@ -61,19 +61,21 @@
                 <p>Subscribe to our newsletter to learn how to better negotiate debt</p>
               </div>
               <div class="footer-form-block w-form">
-<form id="email-form" name="email-form" data-name="Email Form" method="post" action="{{ url_for('add_lead') }}" class="footer-form" data-wf-page-id="6585a9848ff9d5fb0d5d1be7" data-wf-element-id="948a986c-d501-5f5a-a45e-a4b93b5e2b78">
-  <input type="email" class="form-input w-input" maxlength="256" name="email" data-name="Email 2" placeholder="Enter your email" id="Subscribe-email" required="">
-  <input type="hidden" name="name" value=""> <!-- Add this line to send a blank name -->
-  <button type="submit" class="button is-secondary is-small w-button">Subscribe</button> <!-- Change this to a button element -->
-</form>
+                <form id="email-form" name="email-form" class="footer-form">
+                  <input type="email" class="form-input w-input" maxlength="256" name="email" placeholder="Enter your email" id="Subscribe-email" required="">
+                  <input type="hidden" name="name" value="">
+                  <button type="submit" class="button is-secondary is-small w-button">Subscribe</button>
+              </form>
+              
                 <div class="text-size-tiny">By subscribing you agree to with our <a href="{{ url_for('privacy') }}"><span>Privacy Policy</span></a>
                 </div>
-                <div class="success-message w-form-done">
-                  <div>Thank you! Your submission has been received!</div>
-                </div>
-                <div class="error-message w-form-fail">
-                  <div>Oops! Something went wrong while submitting the form.</div>
-                </div>
+                <div id="success-message" class="success-message w-form-done" style="display:none;">
+                <div>Thank you! Your submission has been received!</div>
+            </div>
+            
+            <div id="error_message" class="error_message w_form-fail" style="display:none;">
+                <div>Oops! Something went wrong while submitting the form.</div>
+            </div>
               </div>
             </div>
             <div class="padding-bottom padding-xxlarge"></div>
@@ -178,5 +180,39 @@
           }
       });
     </script>
+<script>
+document.getElementById('email-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+    var object = {};
+    formData.forEach((value, key) => {
+        object[key] = value;
+    });
+    var json = JSON.stringify(object);
+
+    fetch('{{ url_for('add_lead') }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: json
+    }).then(response => {
+        if (response.ok) {
+            console.log('Form submitted successfully');
+            document.getElementById('success-message').style.display = 'block';
+            document.getElementById('error_message').style.display = 'none';
+        } else {
+            console.log('Form submission failed');
+            document.getElementById('error_message').style.display = 'block';
+            document.getElementById('success-message').style.display = 'none';
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+        document.getElementById('error_message').style.display = 'block';
+        document.getElementById('success-message').style.display = 'none';
+    });
+});
+</script>
   </body>
   </html>

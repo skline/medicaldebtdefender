@@ -211,9 +211,10 @@ def add_lead():
     data = request.json
     email = data.get('email')
     name = data.get('name')
+    print(data)
 
     # Validate data
-    if not name or not email:
+    if not email:
         return jsonify({'error': 'Missing name or email'}), 400
 
     # Connect to the database
