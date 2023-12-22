@@ -16,6 +16,10 @@ from werkzeug.utils import secure_filename
 from PIL import Image
 import pytesseract
 
+@app.route('/home', methods=['GET'])
+@app.route('/', methods=['GET'])
+def home():
+    return render_template('home.html')
 
 
 def convert_image_to_text(image_path):
@@ -281,9 +285,17 @@ def form():
 
     return render_template('form.html', clear_text=clear_text)
 
-@app.route('/')
+@app.route('/chatbot')
 def chatbot():
    return render_template('chatbot.html')
+
+@app.route('/about')
+def about():
+   return render_template('about.html')
+
+@app.route('/privacy')
+def privacy():
+   return render_template('privacy.html')
 
 @app.route('/submit', methods=['POST'])
 def submit_form():
