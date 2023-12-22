@@ -4182,7 +4182,7 @@ figcaption {
   }
 
   .navbar-menu {
-    height: auto; /* Change from 100dvh to auto */
+    height: 100dvh;
     background-color: var(--white-smoke);
     -webkit-text-fill-color: inherit;
     background-clip: border-box;
@@ -4191,7 +4191,7 @@ figcaption {
     margin-left: 0;
     padding: 1rem 5% 6.5rem;
     transition: height .5s;
-    position: relative; /* Change from absolute to relative */
+    position: absolute;
     overflow: auto;
   }
 
