@@ -144,6 +144,25 @@ label[for="userFile"],
     word-wrap: break-word;
     margin-bottom: 10px;
 }
+    /* Existing styles here... */
+
+    /* Media query for mobile devices */
+    @media screen and (max-width: 600px) {
+        body {
+            font-size: 18px; /* Larger font size for mobile */
+        }
+
+        #userInput, label[for="userFile"], #chatForm button {
+            font-size: 18px; /* Larger font size for form elements */
+        }
+
+        #overlay-content {
+            font-size: 3rem; /* Larger font size for overlay text */
+        }
+
+        /* Adjust other elements as needed to improve readability on mobile */
+    }
+
     </style>
 </head>
 <body>
