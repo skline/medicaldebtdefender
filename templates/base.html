@@ -44,7 +44,7 @@
       <div class="navbar-container">
         <!-- Adding the robot image to the left side of the navigation bar -->
         <div class="navbar-brand">
-          <img src="{{ url_for('static', filename='images/little_robot.png') }}" alt="Medical Debt Defender Robot" class="navbar-robot">
+          <a href="{{ url_for('chatbot') }}" class="navbar-link w-nav-link"> <img src="{{ url_for('static', filename='images/little_robot.png') }}" alt="Medical Debt Defender Robot" class="navbar-robot"></a>
         </div>
         <nav role="navigation" class="navbar-menu w-nav-menu">
           
@@ -58,8 +58,7 @@
           </div>
         </nav>
         <div class="navbar-brand">
-          <img src="{{ url_for('static', filename='images/little_robot.png') }}" alt="Medical Debt Defender Robot" class="navbar-robot">
-        </div>
+          <a href="{{ url_for('chatbot') }}" class="navbar-link w-nav-link"> <img src="{{ url_for('static', filename='images/little_robot.png') }}" alt="Medical Debt Defender Robot" class="navbar-robot"></a>        </div>
       </div>
     </div>
   </div>
