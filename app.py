@@ -69,7 +69,7 @@ def chat():
   uploaded_file_ids = []
   file_names = []
   pdf_filenames = []
-  if files:
+  if False:
     text=''
     for file in files:
         filename = secure_filename(file.filename)
@@ -92,7 +92,7 @@ def chat():
 
   if not thread_id:
     return jsonify({"error": "Missing thread_id"}), 400
-  if files:
+  if False:
     client.beta.threads.messages.create(thread_id=thread_id,
                                         role="user",
                                         content=user_input+' here is the text from the attached PDF:  '+text,
@@ -141,7 +141,7 @@ def chat():
   response = messages.data[0].content[0].text.value
   response = response.replace("\n", "<br>")
   print(response)
-  if file:
+  if False:
     for filename in file_names:
         os.remove(filename)
     for pdf_filename in pdf_filenames:  # remove the file after upload
