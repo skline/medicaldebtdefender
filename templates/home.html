@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+    <div class="main-wrapper">
+      <header class="section-hero-header background-gradient-dot">
+        <div data-w-id="01c1a83e-257f-7a27-bbd5-515555bc248b" style="opacity:0" class="hero-circle"></div>
+        <div data-w-id="81dc5896-eb6c-59fb-eea3-2e25f6e26783" style="opacity:0" class="hero-circle _2"></div>
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="padding-section-large">
+              <div class="w-layout-grid header-2-component">
+                <div data-w-id="8b7c3664-1e11-6f2c-6801-c0d48f85ab73" style="opacity:0;-webkit-transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" class="header-2-content">
+                  <div class="margin-bottom margin-small">
+                    <h1><strong>AI-Powered Medical Debt Advocate</strong></h1>
+                  </div>
+                  <p class="text-size-medium"><em>Harness the</em><strong><em> power of AI </em></strong><em>to humanize your medical debt experience. </em><strong><em>Medical Debt Defender </em></strong><em>is your empathetic digital assistant, equipped to clarify and help you negotiate your healthcare bills.<br><br>This intelligent platform p</em><strong><em>atiently walks you through your bills</em></strong><em>, translating complex charges into </em><strong><em>understandable terms,</em></strong><em> and</em> guides you through a <strong><em></em>personalized negotiation process.</em></strong><em> <br><br>By understanding your financial situation and the fairness of your bills, it helps you advocate on your behalf</em><strong><em>, potentially leading to better payment outcomes</em></strong><em>. Help control over your medical expenses with a compassionate AI that stands by your side.</em></p>
+                  <div class="margin-top margin-medium">
+                    <div class="button-group">
+
+                      <a href="{{ url_for('chatbot') }}" class="button w-button">Get started</a>
+                      <a href="{{ url_for('about') }}" class="button is-secondary w-button">Learn more</a>
+                    </div>
+                  </div>
+                </div>
+                <div data-w-id="8b7c3664-1e11-6f2c-6801-c0d48f85ab7f" style="opacity:0;-webkit-transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" class="header-2-image-wrapper">
+                    <a href="{{ url_for('chatbot') }}" class="navbar-link w-nav-link"> <img src="{{ url_for('static', filename='images/chatbot.png') }}" loading="eager" width="616" class="header-2-image"></a>
+                </div>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+
+  {% endblock %}

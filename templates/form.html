@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Medical Debt Inquiry Form</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-32x32.png') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+     body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f2ff; /* Light blue background */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center; /* Center align items horizontally */
+            min-height: 100vh;
+            font-weight: bold; /* Make all text bold */
+        }
+
+h2 {
+    color: #2e8b57; /* Sea green color for the heading */
+    margin: 1em 0;
+    padding-top: 1em; /* Add top padding */
+    font-size: 1.5em; /* Relative font size */
+}
+
+form {
+    background: #fff;
+    padding: 1em;
+    margin-top: 1em; /* Add some space above the form */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px; /* Maximum width with a sensible default */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+input[type="number"],
+textarea {
+    width: calc(100% - 20px); /* Subtract padding from width */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 20px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    h2 {
+        font-size: 1.2em; /* Smaller font size for small screens */
+    }
+
+    form {
+        padding: 5%;
+        margin-top: 10px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="number"],
+    textarea {
+        padding: 8px; /* Slightly less padding on small screens */
+    }
+
+    input[type="submit"] {
+        padding: 12px 20px; /* Adjust button padding */
+    }
+}
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust height as needed */
+}
+.spinner {
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .checkbox-label {
+            display: block;
+            margin: 10px 0;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .checkbox-container {
+    position: relative; /* Establish a positioning context */
+    padding-left: 25px; /* Make space for the absolutely positioned checkbox */
+    margin: 10px 0; /* Add some vertical space between elements */
+}
+
+.checkbox-container input[type="checkbox"] {
+    position: absolute; /* Position the checkbox absolutely */
+    left: 0; /* Align it to the left */
+    top: 0; /* Align it to the top */
+    margin-right: 5px; /* Ensure some space on the right */
+}
+
+.checkbox-label {
+    display: block; /* Allows the label to take the full width */
+    /* If you need to align the text vertically with the checkbox, adjust the line-height */
+    line-height: 1.5; /* Adjust this value as needed */
+}
+        </style>
+
+</head>
+<body>
+    <h2>Medical Debt Inquiry Form</h2>
+
+    <form id="dataForm">
+        <!-- Patient Identification -->
+        <p>Full Name: <input type="text" name="patientfullName" placeholder="Full Name" value="John Doe"></p>
+        <p>Date of Birth: <input type="date" name="patient_dob" value="1980-01-01"></p>
+        <p>Patient ID or Account Number: <input type="text" name="patientId" placeholder="Patient ID or Account Number" value="123456789"></p>
+
+        <!-- Contact Information -->
+
+        <p>Current Address: <input type="text" name="patient_address" placeholder="Current Address" value="123 Main St, Anytown, CA, USA, 90027"></p>
+        <p>Contact Number: <input type="tel" name="patient_contactNumber" placeholder="Contact Number" value="303-555-1234"></p>
+        <p>Email Address: <input type="email" name="patient_email" placeholder="Email Address" value="johndoe@example.com"></p>
+        <!-- Medical Bill Details Section -->
+
+        <!-- Debt Specifics -->
+        <p>Total Debt Amount: <input type="number" name="debtAmount" placeholder="Total Debt Amount" value="5000"></p>
+        <p>Please describe the medical services or items charged as you understand them: <br/><textarea name="serviceDescription" rows="4" cols="50" placeholder="Please describe the medical services or items charged as you understand them.">General consultation and X-ray</textarea></p>
+        <p>Date of Service: <input type="date" name="serviceDate" value="2023-01-01"></p>
+        <p>Have you received all associated bills for your service or procedure? <br/>
+            <input type="radio" name="allBillsReceived" value="yes"> Yes
+            <input type="radio" name="allBillsReceived" value="no"> No
+            <input type="radio" name="allBillsReceived" value="unsure" checked> Unsure
+
+        </p>
+        <p>Do you have an itemized bill? <br/>
+            <input type="radio" name="itemizedBill" value="yes"> Yes
+            <input type="radio" name="itemizedBill" value="no" checked> No
+            <input type="radio" name="billFairness" value="unsure" checked> Unsure
+
+        </p>
+
+        <!-- Insurance Information -->
+        <p>Was it covered by insurance? <br/>
+            <input type="radio" name="insuranceCoverage" value="yes"> Yes
+            <input type="radio" name="insuranceCoverage" value="no" checked> No
+            <input type="radio" name="insuranceCoverage" value="unsure"> Unsure
+
+        </p>
+        <p>Have you received an Explanation of Benefits (EOB) from your insurance company? <br/>
+            <input type="radio" name="insuranceEOB" value="yes checked"> Yes
+            <input type="radio" name="insuranceEOB" value="no"> No
+            <input type="radio" name="insuranceEOB" value="unsure"> Unsure
+
+        </p>
+        <p>Do you understand your insurance deductible and co-insurance? <br/>
+            <input type="radio" name="understandDeductible" value="yes"> Yes
+            <input type="radio" name="understandDeductible" value="no"> No
+            <input type="radio" name="understandDeductible" value="unsure" checked> Unsure
+        </p>
+
+        <!-- Bill Assessment Section -->
+        <p>Do you believe the bill is fair and accurate based on your understanding? <br/>
+            <input type="radio" name="billFairness" value="yes"> Yes
+            <input type="radio" name="billFairness" value="no"> No
+            <input type="radio" name="billFairness" value="unsure" checked> Unsure
+
+        </p>
+        <p>If unsure, would you like assistance in comparing charges with standard rates? <br/>
+            <input type="radio" name="compareCharges" value="yes" checked> Yes
+            <input type="radio" name="compareCharges" value="no"> No
+        </p>
+
+   
+
+        <!-- Financial Hardship -->
+        <p>Are you experiencing financial hardship? <input type="radio" name="financialHardship" value="yes" checked> Yes
+        <input type="radio" name="financialHardship" value="no"> No</p>
+        <p><textarea name="financialSituation" rows="4" cols="50" placeholder="Describe Your Financial Situation">Currently unemployed, facing difficulty in meeting expenses</textarea></p>
+
+        <!-- Request for Debt Relief -->
+        <p>Reason for Requesting Debt Write-off:<br/> <textarea name="debtReliefReason" rows="4" cols="50" placeholder="Reason for Requesting Debt Write-off">Unable to pay due to financial hardship</textarea></p>
+        <p>Can you afford a partial payment? <br/>
+        <input type="radio" name="partialPayment" value="yes" checked> Yes
+        <input type="radio" name="partialPayment" value="no" > No</p>
+        <p>Affordable Payment Amount: <input type="number" name="affordableAmount" placeholder="Affordable Payment Amount" value="1000"></p>
+
+        <!-- Patient's Remarks -->
+        <p>Any Other Information or Context:<br/><textarea name="additionalComments" rows="4" cols="50" placeholder="Any Other Information or Context">Seeking assistance for bill reduction</textarea></p>
+
+        <!-- Consent and Confirmation -->
+        <p class="checkbox-container">
+            <input type="checkbox" id="consentCheckbox" name="consent" value="yes" checked>
+            <label for="consentCheckbox" class="checkbox-label">
+                I consent to the information provided being used in OpenAI's models. 
+            </label>
+        </p>
+
+        <!-- Submit Button -->
+        <p><input type="submit" value="Submit"></p>
+    </form>
+    <div id="loadingMessage" style="display:none;">
+        <div class="spinner-container">
+            <div class="spinner"></div>
+        </div>
+        Loading, please wait...
+    </div>
+    <div id="responseContainer"></div>
+    <script>
+        window.onload = function() {
+            // Check if the 'clear_text' flag is true
+            var clearText = {{ clear_text|tojson }};
+            if (clearText) {
+                // Clear all input and textarea elements
+                var inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], textarea');
+                inputs.forEach(function(input) {
+                    input.value = '';
+                });
+        
+                // Uncheck all checkboxes and radio buttons
+                var checks = document.querySelectorAll('input[type="checkbox"], input[type="radio"]');
+                checks.forEach(function(check) {
+                    check.checked = false;
+                });
+            }
+        };
+        </script>
+        
+<script>
+document.getElementById('dataForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    
+    // Hide the form and show the loading message
+    document.getElementById('dataForm').style.display = 'none';
+    document.getElementById('loadingMessage').style.display = 'block';
+    
+    fetch('/submit', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('loadingMessage').style.display = 'none';
+        document.getElementById('responseContainer').innerHTML = data;
+        // Optionally, show the form again or leave it hidden
+        // document.getElementById('dataForm').style.display = 'block';
+    });
+});
+    </script>
+    <script type="text/javascript">
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+              window.voiceflow.chat.load({
+                verify: { projectID: '657cb322ad23dfd497229e92' },
+                url: 'https://general-runtime.voiceflow.com',
+                versionID: 'production'
+              });
+            }
+            v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+        })(document, 'script');
+      </script>
+</body>
+</html>

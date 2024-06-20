@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWecr3z6zsk8pI1LbH7huSsM4WR0l/5fD32nOz1moWou35tv7jDwqndu9zkp" crossorigin="anonymous">
+
+<style>
+    .header-2-image-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the top */
+  justify-content: flex-start; /* Align content to the start of the container */
+}
+.founder-info {
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .founder-info img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+        .linkedin-link {
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .small-headshot {
+    width: 270px; /* Desired width */
+    height: auto; /* Maintain aspect ratio */
+}
+        /* Add additional styling as needed */
+</style>
+<div class="main-wrapper">
+  <header class="section-hero-header background-gradient-dot">
+    <div data-w-id="01c1a83e-257f-7a27-bbd5-515555bc248b" style="opacity:0" class="hero-circle"></div>
+    <div data-w-id="81dc5896-eb6c-59fb-eea3-2e25f6e26783" style="opacity:0" class="hero-circle _2"></div>
+    <div class="padding-global">
+      <div class="container-large">
+        <div class="padding-section-large">
+            <div data-w-id="8b7c3664-1e11-6f2c-6801-c0d48f85ab73" style="opacity:0;-webkit-transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 40px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0)" class="header-2-content">
+              <div class="margin-bottom margin-small">
+                <h1><strong>AI-Powered Medical Debt Advocate</strong></h1>
+              </div>
+              <p class="text-size-medium">
+                In the intricate world of healthcare billing, the 'Medical Debt Defender' emerges as a beacon of clarity and support. As an AI-powered advocate, this digital assistant is more than just technology—it's your ally in demystifying medical debt. With a compassionate touch, it delves into the complexities of your healthcare bills, offering a guiding light through the often murky waters of medical expenses.<br><br>
+                
+                <strong>Empathetic Assistance at Every Step</strong><br><br>
+                
+                The journey through your medical debt is a personalized one. The 'Medical Debt Defender' is patient and attentive, breaking down the jargon-filled bills into clear, actionable information. It goes beyond mere explanation, stepping into the role of a negotiator who comprehends your financial landscape and the nuances of your charges. This isn't just about understanding your bills—it's about advocating for outcomes that are in your best interest.<br><br>
+                
+                <strong>A Methodical Approach to Empowerment</strong><br><br>
+                
+                Before we venture into the specifics of your situation, let's pause and consider the nature of medical bills. There's no ticking clock urging immediate payment, and repeated notices shouldn't hasten your decision-making. Medical debts are unique; they don't accumulate interest, and once settled, they leave no lasting mark on your credit history. It's essential to move at a pace that feels right for you, gathering all pertinent information to make well-informed decisions.<br><br>
+                
+                As you join the 'Medical Debt Defender' community, you'll gain access to valuable resources and guidance on handling and negotiating medical debt. Your journey with us begins with a simple step: providing your email and name. This initial information will allow us to add you to our system through the add_lead function, paving the way for a tailored experience on our website.<br><br>
+                
+                <strong>The Path of Inquiry: A Structured Dialogue </strong></strong><br><br>
+                
+                Upon your registration, we'll embark on a structured inquiry into your medical debt, section by section, to ensure a thorough understanding of your circumstances. Our conversation will be documented in YAML format, a testament to our commitment to organization and clarity.
+              </p>
+              <div class="margin-top margin-medium" style = 'width:100%;margin-bottom:100px;'>
+                <div class="button-group" style = 'width:100%;'>
+                  <a href="{{ url_for('chatbot') }}"  style = 'width:100%; font-size:xx-large; ' class="button w-button"  >Get started</a>
+                </div>
+              </div>
+
+        </div>
+        <div class="founder-info">
+            <h1>Founder</h1>
+            <img src="{{ url_for('static', filename='images/sk_headshot.jpeg') }}" alt="Spencer Kline" class="small-headshot">
+            <p>
+                Medical Debt Defender was founded by Spencer Kline. With over 12 years of experience at the intersection of healthcare and technology, he is passionate about helping patients manage their health and their finances.
+            </p>
+            <a href="https://www.linkedin.com/in/spencerkline/" class="linkedin-link">
+                <img src="{{ url_for('static', filename='images/LinkedIn_1LinkedIn.png') }}" alt="LinkedIn" style="height: 20px; vertical-align: middle;">
+
+                Connect on LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+{% endblock %}

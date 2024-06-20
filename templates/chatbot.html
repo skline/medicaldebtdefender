@@ -1,0 +1,226 @@
+
+{% extends "base.html" %}
+{% block content %}
+<style>
+
+
+    #chatbox {
+        width: 90%;
+        min-width: 100px;
+        height: 350px;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        display: flex;
+        min-width: 200px;
+
+        flex-direction: column; /* Newest messages on top */
+    }
+  
+    #chatForm {
+        width: 85%;
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding:10px;
+        height:400px;
+    }
+  
+    #userInput,
+  label[for="userFile"],
+  #chatForm button {
+  box-sizing: border-box; /* Include padding and border in the width */
+  width: 100%;
+  padding: 10px 15px;
+  border: 2px solid #ddd;
+  border-radius: 18px;
+  margin-top: 10px; /* Add some space above the elements */
+  }
+  
+  #userInput {
+  height: auto; /* Adjust height as needed or keep it auto */
+  height: 100%; /* Set a minimum height */
+  resize: vertical; /* Allow vertical resizing */
+  border-color: transparent; /* Optional: hides the border if you prefer */
+  padding: 10px; /* Padding inside the textarea */
+  }
+  
+  label[for="userFile"],
+  #chatForm button {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border-color: transparent; /* Optional: hides the border if you prefer */
+  font-size: 16px;
+  }
+  
+  #chatForm button {
+  background-color: #00d474;
+  transition: background-color 0.3s;
+  }
+  
+  #chatForm button:hover {
+  background-color: #00c565;
+  }
+  
+    #loading {
+        margin-left: 5px;
+        display: none;
+    }
+  
+    @keyframes blink {
+        0% { opacity: 0; }
+        50% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+  
+    #loading {
+        animation: blink 1s linear infinite;
+    }
+    .file-input-container {
+        padding-left:11%;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  flex-direction: column; /* Stack them vertically */
+  }
+  #overlay {
+  position: fixed;
+  top: 30%; /* Adjust this value to position the overlay higher on the screen */
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  
+  #overlay-content {
+  color: white;
+  font-size: 2rem;
+  /* Add a flashing animation */
+  animation: flashing 1s infinite;
+  }
+  
+  @keyframes flashing {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+  }
+  /* Chat bubble for the user */
+  .user-message {
+  margin-top:10px;
+  background-color: #DCF8C6; /* Light green bubble */
+  margin-left: auto; /* Aligns the bubble to the right */
+  padding: 10px;
+  border-radius: 18px;
+  max-width: 80%;
+  word-wrap: break-word;
+  margin-bottom: 10px;
+  }
+  
+  /* Chat bubble for the chatbot */
+  .chatbot-message {
+  background-color: #E5E5EA; /* Light grey bubble */
+  margin-right: auto; /* Aligns the bubble to the left */
+  padding: 10px;
+  border-radius: 18px;
+  max-width: 80%;
+  word-wrap: break-word;
+  margin-bottom: 10px;
+  }
+  /* Existing styles here... */
+  
+  /* Media query for mobile devices */
+  
+    #userInput, label[for="userFile"], #chatForm button {
+        font-size: 22px; /* Larger font size for form elements */
+    }
+  
+    #overlay-content {
+        font-size: 3rem; /* Larger font size for overlay text */
+    }
+    #userFile {
+        font-size: 16px; /* Larger font size for better readability */
+        /* Add any other styles you wish to apply to the file input */
+    }
+  
+    /* Adjust other elements as needed to improve readability on mobile */
+  
+  .header-2-component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-2-content, .header-2-image-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* Adjust this as necessary */
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+/* Ensure the text and image are not stretched */
+.header-2-content > *, .header-2-image-wrapper > * {
+    width: auto;
+    max-width: 100%;
+}
+/* Improved Centering Styles */
+.main-wrapper {
+    justify-content: center;
+    align-items: center;
+}
+
+.section-page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* Full width of the container */
+    padding: 20px; /* Adjust as needed */
+}
+
+#chatbox, #chatForm {
+    margin: 5px; /* Spacing between chatbox and form */
+}
+
+/* Additional flexbox centering for form elements */
+#chatForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+  </style>
+<div class="main-wrapper">
+    <header class="section-page-header background-gradient-dot">
+        <div id="overlay" style="display: none;">
+            <div id="overlay-content">Loading...</div>
+          </div>
+        <div id="chatbox">
+            <!-- Chat history will be displayed here -->
+        </div>
+        <form id="chatForm">
+            <textarea id="userInput" placeholder="Type your message here...">Can you please help me with my medical bill?</textarea>
+            <button type="submit">Send</button>
+            
+            <!-- Wrap the file input and filenames in a div with class .file-input-container -->
+            <div class="file-input-container">
+                <input type="file" id="userFile" name="userFile" multiple aria-label="File upload">
+            </div>
+        </form>
+        <div class="button-group">
+
+            <a href="{{ url_for('about') }}" class="button w-button">Learn more</a>
+          </div>
+
+    </header>
+  </div>
+{% endblock %}
